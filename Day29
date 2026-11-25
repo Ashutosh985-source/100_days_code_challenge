@@ -1,0 +1,70 @@
+#include <stdio.h>
+#include <string.h>
+
+// Expand around the given center
+int expandAroundCenter(char str[], int left, int right, int n)
+{
+    while (left >= 0 && right < n && str[left] == str[right])
+    {
+        left--;
+        right++;
+    }
+
+    return right - left - 1;
+}
+
+void longestPalindrome(char str[])
+{
+    int n = strlen(str);
+
+    if (n == 0)
+        return;
+
+    int start = 0;
+    int maxLength = 1;
+
+    for (int i = 0; i < n; i++)
+    {
+        // Odd length palindrome
+        int len1 = expandAroundCenter(str, i, i, n);
+
+        // Even length palindrome
+        int len2 = expandAroundCenter(str, i, i + 1, n);
+
+        int currentLength;
+
+        if (len1 > len2)
+            currentLength = len1;
+        else
+            currentLength = len2;
+
+        // Update longest palindrome
+        if (currentLength > maxLength)
+        {
+            maxLength = currentLength;
+
+            start = i - (currentLength - 1) / 2;
+        }
+    }
+
+    printf("Longest Palindromic Substring: ");
+
+    for (int i = start; i < start + maxLength; i++)
+    {
+        printf("%c", str[i]);
+    }
+
+    printf("\nLength: %d\n", maxLength);
+}
+
+int main()
+{
+    char str[100];
+
+    printf("Enter a string: ");
+    scanf("%99s", str);
+
+    longestPalindrome(str);
+
+    return 0;
+}
