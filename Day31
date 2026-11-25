@@ -1,0 +1,47 @@
+#include <stdio.h>
+#include <string.h>
+
+int isAnagram(char s[], int start, char p[])
+{
+    int freq1[26] = {0};
+    int freq2[26] = {0};
+
+    int m = strlen(p);
+
+    // Count characters of substring and pattern
+    for (int i = 0; i < m; i++)
+    {
+        freq1[s[start + i] - 'a']++;
+        freq2[p[i] - 'a']++;
+    }
+
+    // Compare frequencies
+    for (int i = 0; i < 26; i++)
+    {
+        if (freq1[i] != freq2[i])
+            return 0;
+    }
+
+    return 1;
+}
+
+int main()
+{
+    char s[] = "cbaebabacd";
+    char p[] = "abc";
+
+    int n = strlen(s);
+    int m = strlen(p);
+
+    printf("Anagrams found at indices: ");
+
+    for (int i = 0; i <= n - m; i++)
+    {
+        if (isAnagram(s, i, p))
+        {
+            printf("%d ", i);
+        }
+    }
+
+    return 0;
+}
