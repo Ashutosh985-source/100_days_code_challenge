@@ -1,0 +1,102 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node *next;
+};
+
+struct Node* removeNthFromEnd(struct Node* head, int n)
+{
+    int length = 0;
+    struct Node* temp = head;
+
+    // Find length of linked list
+    while (temp != NULL)
+    {
+        length++;
+        temp = temp->next;
+    }
+
+    // Invalid n
+    if (n <= 0 || n > length)
+        return head;
+
+    // If head needs to be deleted
+    if (n == length)
+    {
+        temp = head;
+        head = head->next;
+        free(temp);
+        return head;
+    }
+
+    // Find node just before the node to delete
+    int position = length - n;
+
+    temp = head;
+
+    for (int i = 1; i < position; i++)
+    {
+        temp = temp->next;
+    }
+
+    struct Node* deleteNode = temp->next;
+
+    temp->next = deleteNode->next;
+
+    free(deleteNode);
+
+    return head;
+}
+
+void printList(struct Node* head)
+{
+    while (head != NULL)
+    {
+        printf("%d", head->data);
+
+        if (head->next != NULL)
+            printf(" -> ");
+
+        head = head->next;
+    }
+
+    printf("\n");
+}
+
+int main()
+{
+    struct Node* head = malloc(sizeof(struct Node));
+    struct Node* second = malloc(sizeof(struct Node));
+    struct Node* third = malloc(sizeof(struct Node));
+    struct Node* fourth = malloc(sizeof(struct Node));
+    struct Node* fifth = malloc(sizeof(struct Node));
+
+    head->data = 1;
+    head->next = second;
+
+    second->data = 2;
+    second->next = third;
+
+    third->data = 3;
+    third->next = fourth;
+
+    fourth->data = 4;
+    fourth->next = fifth;
+
+    fifth->data = 5;
+    fifth->next = NULL;
+
+    int n = 2;
+
+    printf("Original List:\n");
+    printList(head);
+
+    head = removeNthFromEnd(head, n);
+
+    printf("After removing %d-th node from end:\n", n);
+    printList(head);
+
+    return 0;
+}
